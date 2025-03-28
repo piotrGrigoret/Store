@@ -1,15 +1,50 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+  font-family: 'Montserrat'; 
+  src: url('/fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+  font-style: normal;
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --primaryMain: #8E2A7E;
+  --primaryLight: #B356A5;
+  --primaryDark: #6A1F5F;
+  --secondaryMain:#FFFFFF;
+  --secondaryDark:#F3F3F5;
+  --backgroundDefault:#242424;
+  --backgroundPaper:#353434;
+  --monsterrat:'Montserrat';
+
   line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  font-family: 'Montserrat';
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--backgroundDefault);
+  color: var(--secondaryMain);
 }
 
+::-webkit-scrollbar {
+  width: 3px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
