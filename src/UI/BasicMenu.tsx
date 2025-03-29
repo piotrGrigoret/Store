@@ -32,9 +32,10 @@ export default function BasicMenu() {
         onClose={handleClose}
 
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleClose}>electronics</MenuItem>
+        <MenuItem onClick={handleClose}>jewelery</MenuItem>
+        <MenuItem onClick={handleClose}>men's clothing</MenuItem>
+        <MenuItem onClick={handleClose}>women's clothing</MenuItem>
       </Menu>
     </div>
   );

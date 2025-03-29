@@ -1,8 +1,16 @@
+import { useDispatch } from "react-redux"
 import ProductCard from "../ProductCard"
+import { fetchProducts } from "../../redux/slices/productsSlice";
+import { useEffect } from "react";
+import { AppDispatch } from "../../redux/store";
 // import { DotLottieReact } from "@lottiefiles/dotlottie-react"
-// import { CardMedia } from "@mui/material"
 
 export const ProductsList = () => {
+    const dispath = useDispatch<AppDispatch>();
+    useEffect(() => {
+      dispath(fetchProducts());
+    }, []);
+
   // return(
   //   <div className="flex flex-col justify-center items-center min-h-[55vh]">
   //     <img className="h-[300px]" src="/assets/svg/emptyCart.svg" alt="" />

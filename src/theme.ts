@@ -54,10 +54,10 @@ const theme = createTheme({
           transition: 'all 0.3s ease',
 
           '&:hover': {
-              backgroundColor: 'rgba(179, 86, 165, 0.1)',
-              // boxShadow: '0 4px 6px rgba(179, 86, 165, 0.3)',
+            backgroundColor: 'rgba(179, 86, 165, 0.2)',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
           },
-
+          
           '&:hover .MuiCardMedia-root': {
             transform: 'scale(1.05)',
             transition: 'all 0.3s ease',
@@ -72,10 +72,16 @@ const theme = createTheme({
           transition: 'all 0.3s ease',
           color: '#FFFFFF',
           borderBottom:'#FFFFFF',
+          padding: '6px',
+          borderRadius:'5px',
+          '&:hover':{
+            backgroundColor: 'rgba(179, 86, 165, 0.2)',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          },
           '&:before': {
             borderBottom: '2px solid #FFFFFF',
+            
           },
-          
           '&:hover:not(.Mui-disabled):before': {
             borderBottom: '2px solid #F3F3F5',
           },
@@ -101,7 +107,6 @@ const theme = createTheme({
           styleOverrides: {
             root: {
               fontFamily:'Montserrat',
-
             }
           }
         }

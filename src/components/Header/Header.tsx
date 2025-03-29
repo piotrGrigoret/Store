@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import { ShoppingCart } from 'lucide-react';
 import Button from '@mui/material/Button';
 import { useLocation } from 'react-router-dom';
+// import { useDispatch } from "react-redux";
 
 export const Header = () => {
-  const location = useLocation();
 
+  const location = useLocation();
   return (
     <Container>
       <Box className="flex justify-between items-center p-4">

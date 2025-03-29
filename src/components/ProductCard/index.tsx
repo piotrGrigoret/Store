@@ -15,13 +15,10 @@ export default function ProductCard() {
 
   const handleOpen = () => {
     setOpen(true);
-    console.log("henalde open");
-
   };
 
   const handleClose = () => {
     setOpen(false);
-    console.log(open);
   };
 
   return (
