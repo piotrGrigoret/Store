@@ -41,7 +41,10 @@ export const ProductsList = () => {
   
   return (
     <div 
-    className="grid grid-cols-1 max-w-[260px] min-h-[45vh] mx-auto gap-x-24 gap-y-10 sm:max-w-[660px] sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[100%]">
+    className="grid grid-cols-1 max-w-[260px] min-h-[45vh] mx-auto gap-x-24 gap-y-10 sm:max-w-[660px] sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[100%]"
+    
+    
+    >
       {products.map((p) =>
         <ProductCard key={p.id} product={p}/>  
       )}

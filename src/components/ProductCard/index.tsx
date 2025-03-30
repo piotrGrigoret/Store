@@ -3,7 +3,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
-import { Button,  Tooltip } from '@mui/material';
+import { Button,  Rating,  Tooltip } from '@mui/material';
 import { ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
 import BasicModal from '../../UI/BasicModal';
@@ -17,7 +17,6 @@ interface ProductCardProps {
 
 export default function ProductCard({product}: ProductCardProps) {
   const [open, setOpen] = useState<boolean>(false);
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -27,34 +26,38 @@ export default function ProductCard({product}: ProductCardProps) {
   };
 
   return (
-    <Card className='m-auto w-320px'>
+    <Card className='flex items-center justify-center flex-col'>
       <Tooltip title="Open">
       <CardActionArea onClick={handleOpen}>
         <CardMedia
           component="img"
-          className="w-full h-[200px] p-3"
+          className="w-full p-4 h-[200px]"
           sx={{
             transition: "0.3s",
             objectFit: "contain",
+            borderRadius: "10px",  
           }}
           image={product.image}
           alt="product"
         />
         <CardContent>
-          <Typography 
-          gutterBottom variant="h5" 
-          className='text-primaryLight  line-clamp-3 h-14 overflow-hidden text-ellipsis' component="div"
-          sx={{ fontFamily: 'Montserrat, sans-serif', fontWeight:'500'}}
-          >
-            {product.title}
-          </Typography>
-          <Typography 
+        <Typography 
             variant="body2" 
             className='text-secondaryDark line-clamp-1 overflow-hidden text-ellipsis'
             sx={{ fontFamily: 'Montserrat, sans-serif', fontWeight:'600', fontSize:'20px'}}  
           >
             {product.price} $
           </Typography>
+          <Typography 
+          gutterBottom variant="h5" 
+          className='text-primaryLight  line-clamp-2 h-16 mt-1 overflow-hidden text-ellipsis' component="div"
+          sx={{ fontFamily: 'Montserrat, sans-serif', fontWeight:'500'}}
+          >
+            {product.title}
+          </Typography>
+          <Rating className='mt-1' name="read-only" value={Number(product.rating.rate)} readOnly />
+
+          
         </CardContent>
         
       </CardActionArea>

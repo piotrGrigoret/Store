@@ -18,12 +18,14 @@ export interface Product {
 
 interface ProductsState {
     products: Product[];
+    cart: Product[]; 
     loading: 'idle' | 'pending' | 'succeeded' | 'failed';
     error: string | undefined;
 }
 
 const initialState: ProductsState = {
     products: [],
+    cart:[],
     loading: 'idle',
     error: ''
 }
@@ -32,9 +34,10 @@ export const fetchProducts = createAsyncThunk(
     "products/fetchProducts",
     async (_, thunkAPI) => {
         try {
-            // const response = await fetch("https://fakestoreapi.com/products");
-            
-            const response = await fetch("https://api.allorigins.win/raw?url=https://fakestoreapi.com/products");
+            // i use vercel for skip cors block in my region , u can use just https://fakestoreapi.com/products or other methods  
+            // const response = await fetch("https://example-36qldut0u-petrgrigorec32-gmailcoms-projects.vercel.app/api/products");
+
+            const response = await fetch("http://localhost:3000/api/products");
             if (!response.ok) throw new Error("error");
             return await response.json();
         } catch (error) {
