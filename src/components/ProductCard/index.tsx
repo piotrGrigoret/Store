@@ -55,7 +55,12 @@ export default function ProductCard({product}: ProductCardProps) {
           >
             {product.title}
           </Typography>
-          <Rating className='mt-1' name="read-only" value={Number(product.rating.rate)} readOnly />
+          <Rating 
+          sx={{ color: "#F3F3F5",   "& .MuiRating-iconEmpty": {
+            color: "#FFFFFF", // Окантовка (белый)
+          }, }} 
+          className='mt-1' name="read-only" value={Number(product.rating.rate)} readOnly />
+
 
           
         </CardContent>

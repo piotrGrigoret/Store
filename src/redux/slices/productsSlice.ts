@@ -34,11 +34,12 @@ export const fetchProducts = createAsyncThunk(
     "products/fetchProducts",
     async (_, thunkAPI) => {
         try {
-            // i use vercel for skip cors block in my region , u can use just https://fakestoreapi.com/products or other methods  
-            // const response = await fetch("https://example-36qldut0u-petrgrigorec32-gmailcoms-projects.vercel.app/api/products");
+            // i use vercel for skip cors block in my region , u can use just https://fakestoreapi.com/products or other methods
+
+            const response = await fetch("https://product-proxy-n9vgg0cl3-petrgrigorec32-gmailcoms-projects.vercel.app/api/products");
             
             // const response = await fetch("http://localhost:3000/api/products");
-            const response = await fetch("https://fakestoreapi.com/products");
+            // const response = await fetch("https://fakestoreapi.com/products");
             if (!response.ok) throw new Error("error");
             return await response.json();
         } catch (error) {
