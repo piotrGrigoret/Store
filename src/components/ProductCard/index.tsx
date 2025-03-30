@@ -9,8 +9,13 @@ import { useState } from 'react';
 import BasicModal from '../../UI/BasicModal';
 // import { CircleCheck } from 'lucide-react';
 // import { CircleX } from 'lucide-react';
+import type { Product } from '../../redux/slices/productsSlice';
 
-export default function ProductCard() {
+interface ProductCardProps {
+  product: Product
+}
+
+export default function ProductCard({product}: ProductCardProps) {
   const [open, setOpen] = useState<boolean>(false);
 
   const handleOpen = () => {
@@ -22,7 +27,7 @@ export default function ProductCard() {
   };
 
   return (
-    <Card className='m-auto max-w-320px'>
+    <Card className='m-auto w-320px'>
       <Tooltip title="Open">
       <CardActionArea onClick={handleOpen}>
         <CardMedia
@@ -32,27 +37,23 @@ export default function ProductCard() {
             transition: "0.3s",
             objectFit: "contain",
           }}
-          image="/assets/jpg/product2.jpg"
+          image={product.image}
           alt="product"
         />
         <CardContent>
           <Typography 
           gutterBottom variant="h5" 
-          className='text-primaryLight  line-clamp-1 overflow-hidden text-ellipsis' component="div"
+          className='text-primaryLight  line-clamp-3 h-14 overflow-hidden text-ellipsis' component="div"
           sx={{ fontFamily: 'Montserrat, sans-serif', fontWeight:'500'}}
           >
-            Lizard
+            {product.title}
           </Typography>
           <Typography 
             variant="body2" 
-            className='text-secondaryDark h-24 line-clamp-5 overflow-hidden text-ellipsis'
-            sx={{ fontFamily: 'Montserrat, sans-serif'}}  
+            className='text-secondaryDark line-clamp-1 overflow-hidden text-ellipsis'
+            sx={{ fontFamily: 'Montserrat, sans-serif', fontWeight:'600', fontSize:'20px'}}  
           >
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-            e reptiles, with over 6,000
-            species, ranging across all continents exe reptiles, with over 6,000
-            species, ranging across all continents ex
+            {product.price} $
           </Typography>
         </CardContent>
         
