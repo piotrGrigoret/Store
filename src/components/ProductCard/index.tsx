@@ -24,7 +24,7 @@ export default function ProductCard({product}: ProductCardProps) {
   const handleClose = () => {
     setOpen(false);
   };
-
+  console.log(product.image);
   return (
     <Card className='flex items-center justify-center flex-col'>
       <Tooltip title="Open">
