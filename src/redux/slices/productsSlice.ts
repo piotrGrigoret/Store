@@ -46,6 +46,7 @@ export const fetchProducts = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             // i use vercel for skip cors block in my region , u can use just https://fakestoreapi.com/products or other methods
+
             // const response = await fetch("https://fakestoreapi.com/products");
 
             const response = await fetch("https://product-proxy.vercel.app/api/products");
@@ -72,10 +73,18 @@ const productsSlice = createSlice({
     reducers: {
         setsearchedParameters: (state, action: PayloadAction<string>) => {
             const searchTerm = action.payload.toLowerCase();
-            state.searchedParameters = searchTerm; // Обновляем значение поискового запроса
+            state.searchedParameters = searchTerm; 
             state.filteredProduct = state.products.filter((product) =>
                 product.title.toLowerCase().includes(searchTerm)
             );
+        },
+        setCart: (state, action: PayloadAction<Product>) => {    
+            state.cart.push(action.payload);
+        },
+
+        setRemoveFromCart: (state, action: PayloadAction<Product>) => {
+            state.cart = state.cart.filter((c) => c.id !== action.payload.id);
+
         }
         
 
@@ -100,6 +109,6 @@ const productsSlice = createSlice({
 });
 
 export const selectProducts = (state: RootState) => state.products;
-export const { setsearchedParameters} = productsSlice.actions;
+export const { setsearchedParameters, setCart, setRemoveFromCart} = productsSlice.actions;
 
 export default productsSlice.reducer;

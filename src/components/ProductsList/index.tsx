@@ -1,29 +1,58 @@
 import React, { Suspense, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux"
 // import ProductCard from "../ProductCard"
-import { fetchProducts, selectProducts } from "../../redux/slices/productsSlice";
+import { fetchProducts, selectProducts} from "../../redux/slices/productsSlice";
 import { useEffect } from "react";
 import { AppDispatch } from "../../redux/store";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react"
 import { Skeleton } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 export const ProductsList = () => {
+    const location = useLocation();
+
     const dispath = useDispatch<AppDispatch>();
-    const {products, loading, error, filteredProduct, searchedParameters} = useSelector(selectProducts);
+    const 
+      {products, 
+      loading, 
+      error, 
+      filteredProduct, 
+      searchedParameters, 
+      cart} = useSelector(selectProducts);
 
     useEffect(() => {
       dispath(fetchProducts());
-      
     }, [dispath]);
     const ProductCard = lazy(() => import("../ProductCard"));
 
-  // return(
-  //   <div className="flex flex-col justify-center items-center min-h-[55vh]">
-  //     <img className="h-[300px]" src="/assets/svg/emptyCart.svg" alt="" />
-  //     <h5 className="text-center font-medium text-base">Your cart is empty</h5>
-  //   </div>
-  // )
 
+  if(location.pathname === "/cart"){
+    console.log(cart);
+    if(cart.length > 0){
+      return(
+        <div 
+        className="grid grid-cols-1 max-w-[260px] min-h-[45vh] mx-auto gap-x-24 gap-y-10 sm:max-w-[660px] sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[100%]"
+        >
+          {cart.map((c) => (  
+            <Suspense key={c.id} fallback={      
+              <Skeleton variant="rectangular" sx={{background:'rgba(179, 86, 165, 0.2)', borderRadius:'10px'}} animation="wave" height={430}/>
+              }
+            >
+              <ProductCard product={c} />
+            </Suspense>
+          ))}
+        </div>
+     )
+    }else{
+      return(
+        <div className="flex flex-col justify-center items-center min-h-[55vh]">
+          <img className="h-[300px]" src="/assets/svg/emptyCart.svg" alt="" />
+          <h5 className="text-center font-medium text-base">Your cart is empty</h5>
+        </div>
+        )
+    }
+  }
+  
   if( loading ==='idle' || loading === 'pending'){
     return(
       <div className="flex justify-center items-center min-h-[45vh]">
@@ -50,7 +79,7 @@ export const ProductsList = () => {
         >
           {filteredProduct.map((p) => (
           <Suspense key={p.id} fallback={      
-            <Skeleton variant="rectangular" sx={{background:'rgba(179, 86, 165, 0.2)', borderRadius:'10px'}} animation="wave" height={300}/>
+            <Skeleton variant="rectangular" sx={{background:'rgba(179, 86, 165, 0.2)', borderRadius:'10px'}} animation="wave" height={400}/>
           }>
             <ProductCard product={p} />
           </Suspense>
@@ -74,12 +103,10 @@ export const ProductsList = () => {
   return (
     <div 
     className="grid grid-cols-1 max-w-[260px] min-h-[45vh] mx-auto gap-x-24 gap-y-10 sm:max-w-[660px] sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[100%]"
-    
-    
     >
       {products.map((p) => (
       <Suspense key={p.id} fallback={      
-        <Skeleton variant="rectangular" sx={{background:'rgba(179, 86, 165, 0.2)', borderRadius:'10px'}} animation="wave" height={300}/>
+        <Skeleton variant="rectangular" sx={{background:'rgba(179, 86, 165, 0.2)', borderRadius:'10px'}} animation="wave" height={400}/>
       }>
         <ProductCard product={p} />
       </Suspense>
