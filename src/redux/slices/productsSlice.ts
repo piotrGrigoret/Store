@@ -30,18 +30,31 @@ const initialState: ProductsState = {
     error: ''
 }
 
+// use Vercel fot proxy images you can dont use it if in your region this source is working 
+const proxyImage = (imageUrl: string) => {
+    const encodedUrl = encodeURIComponent(imageUrl)
+    return `https://product-proxy.vercel.app/api/image?url=${encodedUrl}`
+    // return `http://localhost:3000/api/image?url=${encodedUrl}`
+}
+
 export const fetchProducts = createAsyncThunk(
     "products/fetchProducts",
     async (_, thunkAPI) => {
         try {
             // i use vercel for skip cors block in my region , u can use just https://fakestoreapi.com/products or other methods
-
-            const response = await fetch("https://product-proxy-n9vgg0cl3-petrgrigorec32-gmailcoms-projects.vercel.app/api/products");
-            
-            // const response = await fetch("http://localhost:3000/api/products");
             // const response = await fetch("https://fakestoreapi.com/products");
+
+            const response = await fetch("https://product-proxy.vercel.app/api/products");
+            // const response = await fetch("http://localhost:3000/api/products");
+            
             if (!response.ok) throw new Error("error");
-            return await response.json();
+
+            const products = await response.json()
+
+            return products.map((product: Product) => ({
+              ...product,
+              image: proxyImage(product.image),
+            }))
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "unknown error";
             return thunkAPI.rejectWithValue(errorMessage); 
