@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
 interface Rating {
@@ -19,12 +19,16 @@ export interface Product {
 interface ProductsState {
     products: Product[];
     cart: Product[]; 
+    filteredProduct:Product[];
+    searchedParameters:string;
     loading: 'idle' | 'pending' | 'succeeded' | 'failed';
     error: string | undefined;
 }
 
 const initialState: ProductsState = {
     products: [],
+    filteredProduct:[],
+    searchedParameters: '',
     cart:[],
     loading: 'idle',
     error: ''
@@ -65,29 +69,37 @@ export const fetchProducts = createAsyncThunk(
 const productsSlice = createSlice({
     name: 'products',
     initialState,
-    reducers: {},
+    reducers: {
+        setsearchedParameters: (state, action: PayloadAction<string>) => {
+            const searchTerm = action.payload.toLowerCase();
+            state.searchedParameters = searchTerm; // Обновляем значение поискового запроса
+            state.filteredProduct = state.products.filter((product) =>
+                product.title.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+
+    },
     extraReducers: (builder) => {
         builder
         .addCase(fetchProducts.pending, (state) => {
             state.loading = 'pending';
-            console.log(state.loading)
  
         })
         .addCase(fetchProducts.fulfilled, (state, action) => {
             state.products = action.payload;
             state.loading = 'succeeded';
-            console.log(state.loading)
-            console.log(state.products)
  
         })
         .addCase(fetchProducts.rejected, (state, action) => {
             state.loading = 'failed';
             state.error = action.payload as string;
-            console.log(state.loading)
 
         });
     }
 });
 
 export const selectProducts = (state: RootState) => state.products;
+export const { setsearchedParameters} = productsSlice.actions;
+
 export default productsSlice.reducer;
