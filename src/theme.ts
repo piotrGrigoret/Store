@@ -99,7 +99,6 @@ const theme = createTheme({
           
           '&:hover': {
               backgroundColor: 'rgba(179, 86, 165, 0.1)',
-              transform: 'scale(1.05)',
 
           },
 

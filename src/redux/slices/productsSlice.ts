@@ -15,12 +15,16 @@ export interface Product {
     image: string;
     rating: Rating;
 }
-
+export interface FilterParam {
+    searchObj: string,
+    category: string,
+    sort: string
+}
 interface ProductsState {
     products: Product[];
     cart: Product[]; 
     filteredProduct:Product[];
-    searchedParameters:string;
+    filterParam:FilterParam;
     loading: 'idle' | 'pending' | 'succeeded' | 'failed';
     error: string | undefined;
 }
@@ -28,7 +32,11 @@ interface ProductsState {
 const initialState: ProductsState = {
     products: [],
     filteredProduct:[],
-    searchedParameters: '',
+    filterParam: {
+        searchObj: "",
+        category: "",
+        sort: ""
+    },
     cart:[],
     loading: 'idle',
     error: ''
@@ -71,13 +79,59 @@ const productsSlice = createSlice({
     name: 'products',
     initialState,
     reducers: {
-        setsearchedParameters: (state, action: PayloadAction<string>) => {
-            const searchTerm = action.payload.toLowerCase();
-            state.searchedParameters = searchTerm; 
-            state.filteredProduct = state.products.filter((product) =>
-                product.title.toLowerCase().includes(searchTerm)
-            );
+        
+        setsearchedParameters: (state, action: PayloadAction<FilterParam>) => {
+            const searchTerm = action.payload.searchObj;
+            state.filterParam.searchObj = action.payload.searchObj;
+            if(state.filterParam.category.length > 0){
+                state.filteredProduct = state.products.filter((product) =>
+                    product.title.toLowerCase().includes(searchTerm) 
+                    && product.category.toLowerCase() ===  state.filterParam.category.toLowerCase()
+                );
+                
+            }else{
+                state.filteredProduct = state.products.filter((product) =>
+                    product.title.toLowerCase().includes(searchTerm) 
+                );
+            }
+            
         },
+
+        setSortByCategory: (state, action: PayloadAction<FilterParam>) =>{
+            state.filterParam.category = action.payload.category;
+            
+            if(state.filterParam.searchObj.length > 0){
+
+                state.filteredProduct = state.filteredProduct.filter(product =>        
+                    product.title.toLowerCase().includes(state.filterParam.searchObj)
+                ); 
+            }
+            
+            if(state.filterParam.category === 'all'){ 
+                state.filteredProduct = state.products;
+            }else{
+
+                state.filteredProduct = state.products.filter(product =>        
+                    product.category.toLowerCase() === action.payload.category.toLowerCase()
+                );
+            };
+
+        },
+
+        sortByPrice: (state, action: PayloadAction<FilterParam>) => {
+            state.filterParam.sort = action.payload.sort;
+            if(state.filteredProduct.length === 0){
+                state.filteredProduct = state.products.slice();
+            }
+            if(state.filterParam.sort === 'high'){
+                state.filteredProduct = state.filteredProduct.sort((a, b) => b.price - a.price);
+            }else{
+                state.filteredProduct = state.filteredProduct.sort((a, b) => a.price - b.price );
+            }
+            
+        },
+
+
         setCart: (state, action: PayloadAction<Product>) => {    
             state.cart.push(action.payload);
         },
@@ -85,7 +139,9 @@ const productsSlice = createSlice({
         setRemoveFromCart: (state, action: PayloadAction<Product>) => {
             state.cart = state.cart.filter((c) => c.id !== action.payload.id);
 
-        }
+        },
+
+        
         
 
     },
@@ -109,6 +165,6 @@ const productsSlice = createSlice({
 });
 
 export const selectProducts = (state: RootState) => state.products;
-export const { setsearchedParameters, setCart, setRemoveFromCart} = productsSlice.actions;
+export const { setsearchedParameters,sortByPrice, setCart, setRemoveFromCart, setSortByCategory} = productsSlice.actions;
 
 export default productsSlice.reducer;

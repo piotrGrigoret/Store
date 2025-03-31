@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux"
 // import ProductCard from "../ProductCard"
 import { fetchProducts, selectProducts} from "../../redux/slices/productsSlice";
@@ -9,22 +9,21 @@ import { Skeleton } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
 export const ProductsList = () => {
-    const location = useLocation();
+  const location = useLocation();
+  const dispath = useDispatch<AppDispatch>();
+  const 
+    {products, 
+    loading, 
+    error, 
+    filteredProduct, 
+    filterParam, 
+    cart} = useSelector(selectProducts);
 
-    const dispath = useDispatch<AppDispatch>();
-    const 
-      {products, 
-      loading, 
-      error, 
-      filteredProduct, 
-      searchedParameters, 
-      cart} = useSelector(selectProducts);
+  useEffect(() => {
+    dispath(fetchProducts());
+  }, [dispath]);
 
-    useEffect(() => {
-      dispath(fetchProducts());
-    }, [dispath]);
-    const ProductCard = lazy(() => import("../ProductCard"));
-
+  const ProductCard = lazy(() => import("../ProductCard"));
 
   if(location.pathname === "/cart"){
     console.log(cart);
@@ -71,7 +70,7 @@ export const ProductsList = () => {
     )
   }  
 
-  if(searchedParameters.length > 0){
+  if(filterParam.searchObj.length > 0){
     if(filteredProduct.length > 0){
       return(
         <div 
@@ -95,15 +94,30 @@ export const ProductsList = () => {
             </h5>
           </div>
         )
-    }
-    
-    
+    } 
   }
   
+  if(filteredProduct.length > 0){
+    return(
+      <div 
+      className="grid grid-cols-1 max-w-[260px] min-h-[45vh] mx-auto gap-x-24 gap-y-10 sm:max-w-[660px] sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[100%]"
+      >
+        
+        {filteredProduct.map((p) => (
+        <Suspense key={p.id} fallback={      
+          <Skeleton variant="rectangular" sx={{background:'rgba(179, 86, 165, 0.2)', borderRadius:'10px'}} animation="wave" height={400}/>
+        }>
+          <ProductCard product={p} />
+        </Suspense>
+        ))}
+      </div>
+      )
+  }
   return (
     <div 
     className="grid grid-cols-1 max-w-[260px] min-h-[45vh] mx-auto gap-x-24 gap-y-10 sm:max-w-[660px] sm:grid-cols-2 lg:grid-cols-3 lg:max-w-[100%]"
     >
+      
       {products.map((p) => (
       <Suspense key={p.id} fallback={      
         <Skeleton variant="rectangular" sx={{background:'rgba(179, 86, 165, 0.2)', borderRadius:'10px'}} animation="wave" height={400}/>

@@ -2,22 +2,28 @@ import { Input } from '@mui/material';
 import BasicMenu from '../../UI/BasicMenu';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from "../../redux/store";
-import {  setsearchedParameters } from '../../redux/slices/productsSlice';
+import {  FilterParam, setsearchedParameters } from '../../redux/slices/productsSlice';
+import LongMenu from '../../UI/LongMenu';
 
 
 export const InputData = () => {
   const dispath = useDispatch<AppDispatch>();
 
   const handleChangeParameters = (e: React.ChangeEvent<HTMLInputElement>) =>{
-    dispath(setsearchedParameters(e.target.value));
+    const filterParam: FilterParam = {
+      searchObj: e.target.value,
+      category: "",
+      sort: ""
+    }
+    dispath(setsearchedParameters(filterParam));
   }
   return (
-    <div className='flex space-x-5 items-center justify-center pt-6 pb-20 '>
+    <div className='flex flex-col space-y-5  items-center justify-center pt-6 pb-20 '>
       <Input 
-      className='w-96' 
+      className='lg:w-96 ' 
       placeholder='Search Product' 
       onChange={handleChangeParameters} />
-      <BasicMenu/>
+      <div className='flex gap-3'><BasicMenu/> <LongMenu/></div>
     </div>
   )
 }
